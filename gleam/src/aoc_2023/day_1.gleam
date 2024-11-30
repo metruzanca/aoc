@@ -1,8 +1,7 @@
 import gleam/int
-import gleam/io
+// import gleam/io
 import gleam/list
 import gleam/string
-import utils
 
 /// Goal: Each line has jumble of letters and numbers.
 /// Take the first number and last number.
@@ -15,21 +14,17 @@ pub fn pt_1(input: String) {
   |> list.map(fn(x) {
     let nums =
       x
-      |> string.split("")
-      |> list.filter(utils.is_number)
+      |> string.to_graphemes
+      |> list.filter_map(int.parse)
 
     let assert Ok(left) = list.first(nums)
     case list.last(nums) {
-      Error(_) -> left <> left
-      Ok(right) -> left <> right
+      Error(_) -> left * 11
+      Ok(right) -> left * 10 + right
     }
   })
-  |> list.map(fn(x) {
-    let assert Ok(value) = int.parse(x)
-    value
-  })
   |> int.sum
-  |> io.debug
+  // |> io.debug
 }
 
 pub fn pt_2(_input: String) {
