@@ -27,7 +27,7 @@ Optionally: get in the mood with an _icy_ editor theme like `freethinkel.snowfal
 
 ## Language Recommendations
 
-Generally create a folder in `$YYYY/$LanguageName` e.g. `2024/gleam`. This way you can fuzzy find files with `year language day`.
+Generally create a folder with the language name in the root of the repo. This way you can re-use utils cross year.
 
 ### Gleam
 
@@ -38,7 +38,7 @@ cd 2024;
 gleam new --name aoc_2024 gleam;
 ```
 
-Highly recommend using [gladvent](https://hexdocs.pm/gladvent) to take care of running your aoc files / parts.
+Recommend using [gladvent](https://hexdocs.pm/gladvent) to take care of running your aoc files / parts. Though it does require moving the inputs directory.
 
 ### Javascript
 
