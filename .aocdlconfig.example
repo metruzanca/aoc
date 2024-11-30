@@ -1,0 +1,4 @@
+{
+  "session-cookie": "SESSION_TOKEN_HERE",
+  "output": "{{.Year}}/.inputs/{{.Day}}.txt",
+}

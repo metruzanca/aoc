@@ -1,0 +1,10 @@
+# Usual stuff
+.vscode
+
+# AOC related files
+.aocdlconfig
+**/.inputs/
+
+# Language artifacts
+**/gleam/build
+**/node_modules
