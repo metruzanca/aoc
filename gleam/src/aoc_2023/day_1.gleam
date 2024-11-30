@@ -11,9 +11,9 @@ import gleam/string
 pub fn pt_1(input: String) {
   input
   |> string.split("\n")
-  |> list.map(fn(x) {
+  |> list.map(fn(line) {
     let nums =
-      x
+      line
       |> string.to_graphemes
       |> list.filter_map(int.parse)
 
