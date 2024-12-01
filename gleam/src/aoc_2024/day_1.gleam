@@ -15,11 +15,13 @@ pub fn pt_1(input: String) {
     |> list.filter_map(int.parse)
     |> list.sort(by: int.compare)
   })
+  |> list.transpose
+  |> io.debug
   |> list.fold(0, fn(acc, cur) {
     // TODO ask Gleam discord how to cur[0] and cur[1]
     let assert Ok(left) = list.first(cur)
     let assert Ok(right) = list.last(cur)
-  
+    io.debug(int.absolute_value(left - right))
     acc + int.absolute_value(left - right)
   })
   |> io.debug
