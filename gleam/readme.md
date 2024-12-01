@@ -17,3 +17,11 @@ gleam run run --year=2024 1
 
 - Use `io.debug()` for print debugging as that makes it thru the runner into stdout.
 - Write tests
+
+---
+
+## Notes from Gleam discord AOC channel
+
+<!-- My goals: having fun, learning, sharing, making friends! -->
+
+- https://hexdocs.pm/tote/1.0.2/tote/bag.html - Bag is like a set but can have duplicates. Good for item frequencies.
