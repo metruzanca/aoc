@@ -13,6 +13,7 @@ pub fn parse(input: String) {
 }
 
 // TODO to remove left,right, use tuple of lists instead!
+// Then see if possible to remove the transpose |> map |> transpose
 
 pub fn pt_1(input: List(List(Int))) {
   input
