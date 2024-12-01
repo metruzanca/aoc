@@ -3,7 +3,7 @@ import gleam/list
 import gleam/string
 
 pub fn parse(input: String) {
-input
+  input
   |> string.split("\n")
   |> list.map(fn(line) {
     string.split(line, "   ")
@@ -16,9 +16,7 @@ input
 
 pub fn pt_1(input: List(List(Int))) {
   input
-  |> list.map(fn(col) {
-    list.sort(col, by: int.compare)
-  })
+  |> list.map(fn(col) { list.sort(col, by: int.compare) })
   |> list.transpose
   |> list.fold(0, fn(acc, cur) {
     let assert Ok(left) = list.first(cur)
@@ -28,13 +26,12 @@ pub fn pt_1(input: List(List(Int))) {
 }
 
 pub fn pt_2(columns: List(List(Int))) {
-    let assert Ok(left) = list.first(columns)
-    let assert Ok(right) = list.last(columns)
+  let assert Ok(left) = list.first(columns)
+  let assert Ok(right) = list.last(columns)
 
-    left
-    |> list.map(fn(item) {
-      list.count(right, fn(r_item) { r_item == item }) * item
-    })
-    |> int.sum
+  left
+  |> list.map(fn(item) {
+    list.count(right, fn(r_item) { r_item == item }) * item
+  })
+  |> int.sum
 }
-
