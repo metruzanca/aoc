@@ -1,6 +1,7 @@
 import gleam/list
 import utils/matrix
 import utils/quick
+import utils/ulist
 
 pub fn parse(input: String) {
   input
@@ -28,9 +29,6 @@ fn safe(nums: List(Int)) {
 
 fn fuzzy_safe(nums: List(Int)) {
   nums
-  // Create every version of the row with 1 value removed
-  |> list.index_map(fn(_, idx) {
-    list.append(list.take(nums, idx), list.drop(nums, idx + 1))
-  })
+  |> list.index_map(fn(_, idx) { ulist.remove_at(nums, idx) })
   |> list.any(safe)
 }
