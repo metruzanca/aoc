@@ -1,14 +1,12 @@
 import gleam/int
 import gleam/list
-import gleam/string
+import utils/matrix
+import utils/quick
 
 pub fn parse(input: String) {
   input
-  |> string.split("\n")
-  |> list.map(fn(line) {
-    string.split(line, "   ")
-    |> list.filter_map(int.parse)
-  })
+  |> matrix.parse("\n", "   ")
+  |> matrix.map_cell(quick.int)
   |> list.transpose
 }
 
