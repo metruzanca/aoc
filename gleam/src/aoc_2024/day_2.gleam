@@ -1,8 +1,11 @@
 import gleam/list
-import utils
+import utils/matrix
+import utils/quick
 
 pub fn parse(input: String) {
-  utils.list_of_lists(input, "\n", " ")
+  input
+  |> matrix.parse("\n", " ")
+  |> matrix.map_cell(quick.int)
 }
 
 pub fn pt_1(input: List(List(Int))) {
