@@ -1,13 +1,11 @@
 import gleam/list
-import utils/matrix
 import utils/quick
 import utils/ulist
 
 pub fn parse(input: String) {
   input
-  |> matrix.row("\n")
-  |> matrix.col(" ")
-  |> matrix.map_cell(quick.int)
+  |> ulist.list_list("\n", " ")
+  |> ulist.map_cell(quick.int)
 }
 
 pub fn pt_1(input: List(List(Int))) {
