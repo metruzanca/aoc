@@ -18,35 +18,22 @@ pub fn pt_1(input: String) {
       |> list.filter_map(int.parse)
 
     case is_increasing(line) || is_decreasing(line) {
-      False -> Error(line)
+      False -> Error("Unsafe")
       True -> Ok(line)
     }
   })
   |> list.map(fn(row) {
     row
-    |> all2(fn(a, b) {
-      case a == b {
+    |> list.window_by_2
+    |> list.all(fn(pair) {
+      case pair.0 == pair.1 {
         True -> False
-        False -> int.absolute_value(a - b) <= 3
+        False -> int.absolute_value(pair.0 - pair.1) <= 3
       }
     })
   })
-  |> io.debug
   |> list.map(bool.to_int)
   |> int.sum
-}
-
-// taken from gleam stdlib. I wonder if this already exists (edit: maybe list.window_by_2 is what I needed!)
-/// Compares pairs of numbers
-fn all2(in list: List(a), satisfying predicate: fn(a, a) -> Bool) -> Bool {
-  case list {
-    [] | [_] -> True
-    [first, second, ..rest] ->
-      case predicate(first, second) {
-        True -> all2([second, ..rest], predicate)
-        False -> False
-      }
-  }
 }
 
 fn is_increasing(nums: List(Int)) {
@@ -62,5 +49,5 @@ fn is_decreasing(nums: List(Int)) {
 }
 
 pub fn pt_2(input: String) {
-  todo as "part 2 not implemented"
+  todo as "aaaa"
 }
