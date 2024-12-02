@@ -5,17 +5,18 @@ import gleam/string
 type Matrix(a) =
   List(List(a))
 
-/// String to List of Lists aka Matrix
-pub fn parse(
-  input: String,
-  row_delimiter: String,
-  col_delimiter: String,
-) -> Matrix(String) {
-  input
-  |> string.split(row_delimiter)
-  |> list.map(fn(line) {
-    line
-    |> string.split(col_delimiter)
+pub fn row(input: String, row_delimiter: String) {
+  string.split(input, row_delimiter)
+}
+
+pub fn col(row: List(String), col_delimiter: String) {
+  list.map(row, fn(line) { string.split(line, col_delimiter) })
+}
+
+pub fn col_tuple(row: List(String), col_delimiter: String) {
+  list.map(row, fn(line) {
+    let assert Ok(pair) = string.split_once(line, col_delimiter)
+    pair
   })
 }
 

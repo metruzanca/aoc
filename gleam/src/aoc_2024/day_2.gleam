@@ -5,7 +5,8 @@ import utils/ulist
 
 pub fn parse(input: String) {
   input
-  |> matrix.parse("\n", " ")
+  |> matrix.row("\n")
+  |> matrix.col(" ")
   |> matrix.map_cell(quick.int)
 }
 

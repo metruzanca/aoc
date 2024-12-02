@@ -5,9 +5,9 @@ import utils/quick
 
 pub fn parse(input: String) {
   input
-  |> matrix.parse("\n", "   ")
+  |> matrix.row("\n")
+  |> matrix.col("   ")
   |> matrix.map_cell(quick.int)
-  |> list.transpose
 }
 
 // TODO to remove left,right, use tuple of lists instead!
@@ -15,6 +15,7 @@ pub fn parse(input: String) {
 
 pub fn pt_1(input: List(List(Int))) {
   input
+  |> list.transpose
   |> list.map(fn(col) { list.sort(col, by: int.compare) })
   |> list.transpose
   |> list.fold(0, fn(acc, cur) {
@@ -25,6 +26,7 @@ pub fn pt_1(input: List(List(Int))) {
 }
 
 pub fn pt_2(columns: List(List(Int))) {
+  let columns = list.transpose(columns)
   let assert Ok(left) = list.first(columns)
   let assert Ok(right) = list.last(columns)
 
