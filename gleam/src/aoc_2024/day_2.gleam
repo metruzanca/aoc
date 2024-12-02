@@ -11,31 +11,56 @@ import gleam/string
 pub fn pt_1(input: String) {
   input
   |> string.split("\n")
-  // use filter_map instead
-  |> list.map(fn(line) {
-    line
-    |> string.split(" ")
-    |> list.filter_map(int.parse)
-    |> all2(fn(a, b) { int.absolute_value(a - b) <= 3 })
-    // |> io.debug
+  |> list.filter_map(fn(line) {
+    let line =
+      line
+      |> string.split(" ")
+      |> list.filter_map(int.parse)
+
+    case is_increasing(line) || is_decreasing(line) {
+      False -> Error(line)
+      True -> Ok(line)
+    }
   })
+  |> list.map(fn(row) {
+    row
+    |> all2(fn(a, b) {
+      case a == b {
+        True -> False
+        False -> int.absolute_value(a - b) <= 3
+      }
+    })
+  })
+  |> io.debug
   |> list.map(bool.to_int)
   |> int.sum
 }
 
-pub fn pt_2(input: String) {
-  todo as "part 2 not implemented"
-}
-
-// taken from gleam stdlib
+// taken from gleam stdlib. I wonder if this already exists (edit: maybe list.window_by_2 is what I needed!)
+/// Compares pairs of numbers
 fn all2(in list: List(a), satisfying predicate: fn(a, a) -> Bool) -> Bool {
   case list {
-    [] -> True
+    [] | [_] -> True
     [first, second, ..rest] ->
       case predicate(first, second) {
-        True -> all2(rest, predicate)
+        True -> all2([second, ..rest], predicate)
         False -> False
       }
-    [_] -> False
   }
+}
+
+fn is_increasing(nums: List(Int)) {
+  nums
+  |> list.window_by_2
+  |> list.all(fn(pair) { pair.0 > pair.1 })
+}
+
+fn is_decreasing(nums: List(Int)) {
+  nums
+  |> list.window_by_2
+  |> list.all(fn(pair) { pair.0 < pair.1 })
+}
+
+pub fn pt_2(input: String) {
+  todo as "part 2 not implemented"
 }
