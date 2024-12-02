@@ -9,6 +9,10 @@ pub fn pt_1(input: List(List(Int))) {
   list.count(input, safe)
 }
 
+pub fn pt_2(input: List(List(Int))) {
+  list.count(input, fuzzy_safe)
+}
+
 fn safe(nums: List(Int)) {
   nums
   |> list.window_by_2
@@ -19,6 +23,11 @@ fn safe(nums: List(Int)) {
   }
 }
 
-pub fn pt_2(input: List(List(Int))) {
-  todo as "aaaa"
+fn fuzzy_safe(nums: List(Int)) {
+  nums
+  // Create every version of the row with 1 value removed
+  |> list.index_map(fn(_, idx) {
+    list.append(list.take(nums, idx), list.drop(nums, idx + 1))
+  })
+  |> list.any(safe)
 }
