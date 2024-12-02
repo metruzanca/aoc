@@ -1,8 +1,9 @@
 import gleam/bool
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
+
+// import gleam/io
 
 /// Split lines, split line by space.
 /// Each line needs to be either always increasing or always decreesing by 1, 2, or 3.
@@ -17,7 +18,7 @@ pub fn pt_1(input: String) {
       |> string.split(" ")
       |> list.filter_map(int.parse)
 
-    case is_increasing(line) || is_decreasing(line) {
+    case safe(line) {
       False -> Error("Unsafe")
       True -> Ok(line)
     }
@@ -36,16 +37,13 @@ pub fn pt_1(input: String) {
   |> int.sum
 }
 
-fn is_increasing(nums: List(Int)) {
+fn safe(nums: List(Int)) {
   nums
   |> list.window_by_2
-  |> list.all(fn(pair) { pair.0 > pair.1 })
-}
-
-fn is_decreasing(nums: List(Int)) {
-  nums
-  |> list.window_by_2
-  |> list.all(fn(pair) { pair.0 < pair.1 })
+  |> fn(pairs) {
+    list.all(pairs, fn(pair) { pair.0 > pair.1 })
+    || list.all(pairs, fn(pair) { pair.0 < pair.1 })
+  }
 }
 
 pub fn pt_2(input: String) {
