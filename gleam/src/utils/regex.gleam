@@ -2,27 +2,15 @@ import gleam/list
 import gleam/regex
 import utils/quick
 
-pub fn regex_matches(
-  match_on content: String,
-  using pattern: String,
-  with fun: fn(List(regex.Match)) -> a,
-) {
-  regex.from_string(pattern)
-  |> quick.unwrap
-  |> regex.scan(content)
-  |> fun
-}
-
 pub type Match =
   regex.Match
 
-pub fn regex_matches_map(
+pub fn regex_scan(
   match_on content: String,
   using pattern: String,
-  with fun: fn(String) -> a,
-) {
+) -> List(String) {
   regex.from_string(pattern)
   |> quick.unwrap
   |> regex.scan(content)
-  |> list.map(fn(match) { fun(match.content) })
+  |> list.map(fn(match) { match.content })
 }

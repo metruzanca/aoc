@@ -2,36 +2,31 @@ import gleam/int
 import gleam/io
 import gleam/list
 import gleam/string
-import utils/benchmark
 import utils/quick
 import utils/regex
 
-pub fn parse(input: String) {
-  // use <- benchmark.profile("Parsing")
-  input
-}
-
-const do = "do()"
-
-const dont = "don't()"
-
-const dodont_pattern = "(?<=do\\(\\))(.+?)(?=don't\\(\\))"
+const dodont_pattern = "do\\(\\)(.+?)don't\\(\\)"
 
 const mul_pattern = "mul\\(\\d+,\\d+\\)"
 
+pub fn parse(input: String) {
+  "do()" <> input <> "don't()"
+}
+
 pub fn pt_1(input: String) {
   input
-  |> regex.regex_matches_map(mul_pattern, parse_mul)
+  |> regex.regex_scan(mul_pattern)
+  |> list.map(parse_mul)
   |> int.sum
 }
 
 pub fn pt_2(input: String) {
-  let input = do <> input <> dont
-
-  regex.regex_matches_map(input, dodont_pattern, fn(content) {
-    regex.regex_matches_map(content, mul_pattern, parse_mul)
-    |> int.sum
-  })
+  input
+  |> regex.regex_scan(dodont_pattern)
+  |> io.debug
+  |> list.flat_map(fn(content) { regex.regex_scan(content, mul_pattern) })
+  |> io.debug
+  |> list.map(parse_mul)
   |> int.sum
 }
 
