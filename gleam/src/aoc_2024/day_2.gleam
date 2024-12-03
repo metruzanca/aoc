@@ -4,6 +4,7 @@ import utils/quick
 import utils/ulist
 
 pub fn parse(input: String) {
+  use <- benchmark.profile("Parsing")
   input
   |> ulist.list_list("\n", " ")
   |> ulist.map_cell(quick.int)
