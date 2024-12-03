@@ -17,6 +17,7 @@ gleam run run --year=2024 1
 
 - Use `io.debug()` for print debugging as that makes it thru the runner into stdout.
 - Write tests
+- CHECK FOR NEW LINES!
 
 ---
 

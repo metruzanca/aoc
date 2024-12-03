@@ -1,11 +1,10 @@
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
 import utils/quick
 import utils/regex
 
-const dodont_pattern = "do\\(\\)(.+?)don't\\(\\)"
+const dodont_pattern = "do\\(\\)((.|\n)+?)don't\\(\\)"
 
 const mul_pattern = "mul\\(\\d+,\\d+\\)"
 
@@ -18,21 +17,16 @@ pub fn pt_1(input: String) {
   |> regex.regex_scan(mul_pattern)
   |> list.map(parse_mul)
   |> int.sum
-  |> io.debug
 }
 
 pub fn pt_2(input: String) {
   input
   |> regex.regex_scan(dodont_pattern)
-  |> list.map(pt_1)
-  // |> list.flat_map(fn(content) {
-  //   // io.println(content <> "\n\n\n")
-
-  //   regex.regex_scan(content, mul_pattern)
-  //   |> io.debug
-  // })
-  // |> list.map(parse_mul)
-  // |> io.debug
+  |> list.flat_map(fn(input) {
+    input
+    |> regex.regex_scan(mul_pattern)
+  })
+  |> list.map(parse_mul)
   |> int.sum
 }
 
