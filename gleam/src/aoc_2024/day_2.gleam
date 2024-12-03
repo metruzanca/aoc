@@ -1,22 +1,18 @@
 import gleam/list
-import utils/benchmark
 import utils/quick
 import utils/ulist
 
 pub fn parse(input: String) {
-  use <- benchmark.profile("Parsing")
   input
   |> ulist.list_list("\n", " ")
   |> ulist.map_cell(quick.int)
 }
 
 pub fn pt_1(input: List(List(Int))) {
-  use <- benchmark.profile("Part 1")
   list.count(input, safe)
 }
 
 pub fn pt_2(input: List(List(Int))) {
-  use <- benchmark.profile("Part 2")
   list.count(input, fuzzy_safe)
 }
 

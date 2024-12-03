@@ -22,11 +22,7 @@ pub fn pt_1(input: String) {
 pub fn pt_2(input: String) {
   input
   |> regex.regex_scan(dodont_pattern)
-  |> list.flat_map(fn(input) {
-    input
-    |> regex.regex_scan(mul_pattern)
-  })
-  |> list.map(parse_mul)
+  |> list.map(pt_1)
   |> int.sum
 }
 
