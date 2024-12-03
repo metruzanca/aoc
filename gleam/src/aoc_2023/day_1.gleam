@@ -28,20 +28,20 @@ pub fn pt_1(lines: List(String)) {
 }
 
 // Goal: Same as above, but you also need to parse strings of numbers spelt out e.g. "one" -> 1.
-pub fn pt_2(lines: List(String)) {
-  lines
-  |> list.map(fn(line) {
-    todo
-    // line
-    // // |> string.to_graphemes
-    // |> list.map(fn(x) {s
+// pub fn pt_2(lines: List(String)) {
+//   lines
+//   |> list.map(fn(line) {
+//     todo
+//     // line
+//     // // |> string.to_graphemes
+//     // |> list.map(fn(x) {s
 
-    // })
-    // // |> list.filter_map(int.parse)
-    // |> take_between
-  })
-  |> int.sum
-}
+//     // })
+//     // // |> list.filter_map(int.parse)
+//     // |> take_between
+//   })
+//   |> int.sum
+// }
 
 pub fn take_between(nums: List(Int)) {
   let assert Ok(left) = list.first(nums)
