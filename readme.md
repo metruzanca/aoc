@@ -1,17 +1,28 @@
 # Advent of Code
 
+## Languages
+
 ### Gleam
+
+Create day files
 
 ```bash
 gleam run new 1 --year=2024;
-aocdl -year 2024 -day 1 --force;
 ```
 
-Run gleam file
+Run file
 
 ```bash
 gleam run run --year=2024 1
 ```
+
+Run `$number.example.txt` files
+
+```bash
+gleam run run 1 --example
+```
+
+---
 
 ## Tips
 
