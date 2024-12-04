@@ -66,6 +66,10 @@ fn count_words(grid: Grid(String), pos: Point) -> Int {
 }
 
 /// Builds the word from the values in the Grid using our list of Points
+/// 
+/// We use results, because we might be "indexing" outside of the grid,
+/// as our fn word_lookups generates point lists optimistically.
+/// This function is what tells us if they're valid or not.
 fn get_word(grid: Grid(String), points: Word) {
   use result, point <- list.try_fold(points, "")
   use letter <- result.try(dict.get(grid, point))
