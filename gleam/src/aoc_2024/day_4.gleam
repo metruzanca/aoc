@@ -21,8 +21,12 @@ pub fn pt_1(grid: Grid(String)) {
 }
 
 /// Given a position in a grid, will count all valid words in all directions.
-fn count_words(grid: Grid(String), pos: Point, word: String) -> Int {
-  let words = word_lookups(word, pos)
+fn count_words(
+  in grid: Grid(String),
+  at position: Point,
+  for word: String,
+) -> Int {
+  let words = word_lookups(word, position)
 
   use count, points <- list.fold(words, 0)
   case get_word(grid, points) {
@@ -36,7 +40,7 @@ fn count_words(grid: Grid(String), pos: Point, word: String) -> Int {
 /// We use results, because we might be "indexing" outside of the grid,
 /// as our fn word_lookups generates point lists optimistically.
 /// This function is what tells us if they're valid or not.
-fn get_word(grid: Grid(String), points: Word) {
+fn get_word(in grid: Grid(String), at points: Word) {
   use result, point <- list.try_fold(points, "")
   use letter <- result.try(dict.get(grid, point))
   Ok(result <> letter)
