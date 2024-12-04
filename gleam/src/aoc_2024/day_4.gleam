@@ -17,16 +17,16 @@ pub fn parse(input: String) -> Grid(String) {
 
 pub fn pt_1(grid: Grid(String)) {
   use count, point, _ <- dict.fold(grid, 0)
-  count + count_words(grid, point)
+  count + count_words(grid, point, "XMAS")
 }
 
 /// Given a position in a grid, will count all valid words in all directions.
-fn count_words(grid: Grid(String), pos: Point) -> Int {
-  let words = word_lookups("XMAS", pos)
+fn count_words(grid: Grid(String), pos: Point, word: String) -> Int {
+  let words = word_lookups(word, pos)
 
-  use count, word <- list.fold(words, 0)
-  case get_word(grid, word) {
-    Ok("XMAS") -> count + 1
+  use count, points <- list.fold(words, 0)
+  case get_word(grid, points) {
+    Ok(res) if res == word -> count + 1
     Ok(_) | Error(_) -> count
   }
 }
