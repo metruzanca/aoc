@@ -1,11 +1,12 @@
 import gleam/list
+import gleam/string
 import utils/quick
 import utils/ulist
 
 pub fn parse(input: String) {
-  input
-  |> ulist.list_list("\n", " ")
-  |> ulist.map_cell(quick.int)
+  use line <- list.map(string.split(input, "\n"))
+  string.split(line, " ")
+  |> list.map(quick.int)
 }
 
 pub fn pt_1(input: List(List(Int))) {

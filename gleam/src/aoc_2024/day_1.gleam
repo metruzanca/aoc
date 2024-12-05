@@ -1,14 +1,12 @@
 import gleam/int
 import gleam/list
+import gleam/string
 import utils/quick
-import utils/ulist
 
 pub fn parse(input: String) {
-  input
-  |> ulist.list_list("\n", "   ")
-  |> ulist.map_cell(quick.int)
-  // |> matrix.tuple_list("\n", "   ")
-  // |> matrix.map_tuple(quick.int)
+  use lines <- list.map(string.split(input, "\n"))
+  string.split(lines, "   ")
+  |> list.map(quick.int)
 }
 
 // TODO to remove left,right, use tuple of lists instead!
