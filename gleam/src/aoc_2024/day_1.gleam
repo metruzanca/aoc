@@ -18,20 +18,15 @@ pub fn pt_1(input: List(List(Int))) {
   |> list.map(fn(col) { list.sort(col, by: int.compare) })
   |> list.transpose
   |> list.fold(0, fn(acc, cur) {
-    let assert Ok(left) = list.first(cur)
-    let assert Ok(right) = list.last(cur)
+    let assert [left, right] = cur
     acc + int.absolute_value(left - right)
   })
 }
 
 pub fn pt_2(columns: List(List(Int))) {
   let columns = list.transpose(columns)
-  let assert Ok(left) = list.first(columns)
-  let assert Ok(right) = list.last(columns)
+  let assert [left, right] = columns
 
-  left
-  |> list.map(fn(item) {
-    list.count(right, fn(r_item) { r_item == item }) * item
-  })
-  |> int.sum
+  use count, item <- list.fold(left, 0)
+  count + list.count(right, fn(r_item) { r_item == item }) * item
 }
