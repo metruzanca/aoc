@@ -4,6 +4,7 @@ import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
+import utils/quick
 
 pub fn parse(input: String) {
   let assert Ok(#(first, second)) = string.split_once(input, "\n\n")
@@ -11,6 +12,9 @@ pub fn parse(input: String) {
   let rules =
     list.fold(string.split(first, "\n"), dict.new(), fn(rules, line) {
       let assert Ok(#(x, y)) = string.split_once(line, "|")
+
+      let y = quick.int(y)
+      let x = quick.int(x)
 
       case dict.get(rules, x) {
         Error(_) -> dict.insert(rules, x, [y])
@@ -21,13 +25,17 @@ pub fn parse(input: String) {
   let lines =
     second
     |> string.split("\n")
-    |> list.map(fn(line) { string.split(line, ",") })
+    |> list.map(fn(line) {
+      line
+      |> string.split(",")
+      |> list.map(quick.int)
+    })
 
   #(rules, lines)
 }
 
 pub type Parsed =
-  #(dict.Dict(String, List(String)), List(List(String)))
+  #(dict.Dict(Int, List(Int)), List(List(Int)))
 
 pub fn pt_1(input: Parsed) {
   let #(rules, lines) = input
@@ -53,14 +61,14 @@ pub fn pt_1(input: Parsed) {
   |> int.sum
 }
 
-fn get_middle(array: List(String)) {
+fn get_middle(array: List(Int)) {
   array
   |> list.drop(list.length(array) / 2)
   |> list.first
-  |> result.try(int.parse)
+  // |> result.try(int.parse)
   |> result.unwrap(0)
 }
 
 pub fn pt_2(input: Parsed) {
-  todo as "part 2 not implemented"
+  todo
 }
