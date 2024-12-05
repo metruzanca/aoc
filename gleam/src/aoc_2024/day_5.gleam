@@ -1,37 +1,33 @@
 import gleam/dict
-import gleam/int
-import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
 import utils/quick
 
+fn parse_rules(rules: String) {
+  use rules, line <- list.fold(string.split(rules, "\n"), dict.new())
+  let assert Ok(#(x, y)) = string.split_once(line, "|")
+
+  let y = quick.int(y)
+  let x = quick.int(x)
+
+  case dict.get(rules, x) {
+    Error(_) -> dict.insert(rules, x, [y])
+    Ok(rest) -> dict.insert(rules, x, [y, ..rest])
+  }
+}
+
+fn parse_lines(lines: String) {
+  use line <- list.map(string.split(lines, "\n"))
+  line
+  |> string.split(",")
+  |> list.map(quick.int)
+}
+
 pub fn parse(input: String) {
-  let assert Ok(#(first, second)) = string.split_once(input, "\n\n")
+  let assert Ok(#(rules, lines)) = string.split_once(input, "\n\n")
 
-  let rules =
-    list.fold(string.split(first, "\n"), dict.new(), fn(rules, line) {
-      let assert Ok(#(x, y)) = string.split_once(line, "|")
-
-      let y = quick.int(y)
-      let x = quick.int(x)
-
-      case dict.get(rules, x) {
-        Error(_) -> dict.insert(rules, x, [y])
-        Ok(rest) -> dict.insert(rules, x, [y, ..rest])
-      }
-    })
-
-  let lines =
-    second
-    |> string.split("\n")
-    |> list.map(fn(line) {
-      line
-      |> string.split(",")
-      |> list.map(quick.int)
-    })
-
-  #(rules, lines)
+  #(parse_rules(rules), parse_lines(lines))
 }
 
 pub type Parsed =
@@ -39,33 +35,27 @@ pub type Parsed =
 
 pub fn pt_1(input: Parsed) {
   let #(rules, lines) = input
+  use count, line <- list.fold(lines, 0)
 
-  lines
-  |> list.map(fn(line) {
-    let result =
-      line
-      |> list.window_by_2
-      |> list.all(fn(pair) {
-        let #(first, second) = pair
-        case dict.get(rules, first) {
-          Error(_) -> False
-          Ok(first_rules) -> list.contains(first_rules, second)
-        }
-      })
+  count
+  + case is_ordered(line, rules) {
+    False -> 0
+    True -> get_middle(line)
+  }
+}
 
-    case result {
-      False -> 0
-      True -> get_middle(line)
-    }
-  })
-  |> int.sum
+fn is_ordered(line: List(Int), rules: dict.Dict(Int, List(Int))) {
+  use pair <- list.all(list.window_by_2(line))
+  case dict.get(rules, pair.0) {
+    Error(_) -> False
+    Ok(first_rules) -> list.contains(first_rules, pair.1)
+  }
 }
 
 fn get_middle(array: List(Int)) {
   array
   |> list.drop(list.length(array) / 2)
   |> list.first
-  // |> result.try(int.parse)
   |> result.unwrap(0)
 }
 
