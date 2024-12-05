@@ -1,3 +1,4 @@
+import gleam/bool
 import gleam/dict
 import gleam/list
 import gleam/result
@@ -37,11 +38,8 @@ pub fn pt_1(input: Parsed) {
   let #(rules, lines) = input
   use count, line <- list.fold(lines, 0)
 
-  count
-  + case is_ordered(line, rules) {
-    False -> 0
-    True -> get_middle(line)
-  }
+  use <- bool.guard(!is_ordered(line, rules), count)
+  count + get_middle(line)
 }
 
 fn is_ordered(line: List(Int), rules: dict.Dict(Int, List(Int))) {
