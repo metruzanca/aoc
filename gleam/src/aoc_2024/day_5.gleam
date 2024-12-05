@@ -40,16 +40,18 @@ pub fn pt_1(input: Parsed) {
   let #(rules, lines) = input
   use count, line <- list.fold(lines, 0)
 
-  use <- bool.guard(!is_ordered(line, rules), count)
+  use <- bool.guard(!is_sorted(line, rules), count)
   count + get_middle(line)
 }
 
-fn is_ordered(line: List(Int), rules: dict.Dict(Int, List(Int))) {
-  use pair <- list.all(list.window_by_2(line))
-  case dict.get(rules, pair.0) {
-    Error(_) -> False
-    Ok(first_rules) -> list.contains(first_rules, pair.1)
-  }
+pub fn pt_2(input: Parsed) {
+  let #(rules, lines) = input
+  use count, line <- list.fold(lines, 0)
+
+  use <- bool.guard(is_sorted(line, rules), count)
+  let line = to_sorted(line, rules)
+
+  count + get_middle(line)
 }
 
 fn get_middle(array: List(Int)) {
@@ -59,17 +61,15 @@ fn get_middle(array: List(Int)) {
   |> result.unwrap(0)
 }
 
-pub fn pt_2(input: Parsed) {
-  let #(rules, lines) = input
-  use count, line <- list.fold(lines, 0)
-
-  use <- bool.guard(is_ordered(line, rules), count)
-  let line = sort_line(line, rules)
-
-  count + get_middle(line)
+fn is_sorted(line: List(Int), rules: dict.Dict(Int, List(Int))) {
+  use pair <- list.all(list.window_by_2(line))
+  case dict.get(rules, pair.0) {
+    Error(_) -> False
+    Ok(first_rules) -> list.contains(first_rules, pair.1)
+  }
 }
 
-fn sort_line(line: List(Int), rules: dict.Dict(Int, List(Int))) {
+fn to_sorted(line: List(Int), rules: dict.Dict(Int, List(Int))) {
   use a, b <- list.sort(line)
   case dict.get(rules, b) {
     Error(_) -> order.Lt
