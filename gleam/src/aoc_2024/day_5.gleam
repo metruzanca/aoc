@@ -1,6 +1,7 @@
 import gleam/bool
 import gleam/dict
 import gleam/list
+import gleam/order
 import gleam/result
 import gleam/string
 import utils/quick
@@ -59,5 +60,24 @@ fn get_middle(array: List(Int)) {
 }
 
 pub fn pt_2(input: Parsed) {
-  todo
+  let #(rules, lines) = input
+  use count, line <- list.fold(lines, 0)
+
+  use <- bool.guard(is_ordered(line, rules), count)
+  let line = sort_line(line, rules)
+
+  count + get_middle(line)
+}
+
+fn sort_line(line: List(Int), rules: dict.Dict(Int, List(Int))) {
+  use a, b <- list.sort(line)
+  case dict.get(rules, b) {
+    Error(_) -> order.Lt
+    Ok(first_rules) -> {
+      case list.contains(first_rules, a) {
+        False -> order.Lt
+        True -> order.Gt
+      }
+    }
+  }
 }
