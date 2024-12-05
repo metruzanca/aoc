@@ -5,30 +5,31 @@ import gleam/result
 import gleam/string
 import utils/quick
 
-fn parse_rules(rules: String) {
-  use rules, line <- list.fold(string.split(rules, "\n"), dict.new())
-  let assert Ok(#(x, y)) = string.split_once(line, "|")
-
-  let y = quick.int(y)
-  let x = quick.int(x)
-
-  case dict.get(rules, x) {
-    Error(_) -> dict.insert(rules, x, [y])
-    Ok(rest) -> dict.insert(rules, x, [y, ..rest])
-  }
-}
-
-fn parse_lines(lines: String) {
-  use line <- list.map(string.split(lines, "\n"))
-  line
-  |> string.split(",")
-  |> list.map(quick.int)
-}
-
 pub fn parse(input: String) {
   let assert Ok(#(rules, lines)) = string.split_once(input, "\n\n")
 
-  #(parse_rules(rules), parse_lines(lines))
+  let rules =
+    string.split(rules, "\n")
+    |> list.fold(dict.new(), fn(rules, line) {
+      let assert Ok(#(x, y)) = string.split_once(line, "|")
+
+      let y = quick.int(y)
+      let x = quick.int(x)
+
+      case dict.get(rules, x) {
+        Error(_) -> dict.insert(rules, x, [y])
+        Ok(rest) -> dict.insert(rules, x, [y, ..rest])
+      }
+    })
+
+  let lines =
+    list.map(string.split(lines, "\n"), fn(line) {
+      line
+      |> string.split(",")
+      |> list.map(quick.int)
+    })
+
+  #(rules, lines)
 }
 
 pub type Parsed =
