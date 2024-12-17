@@ -3,7 +3,8 @@
 
 # AOC related files
 .aocdlconfig
-**/input/
+**/input/**/*.txt
+!**/input/**/*.example.txt
 
 # Language artifacts
 **/gleam/build
