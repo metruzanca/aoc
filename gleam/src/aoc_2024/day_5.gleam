@@ -1,3 +1,8 @@
+// In Advent of Code 2024, Day 5, you must analyze a list of page ordering rules (e.g., X|Y means X must come before Y)
+// and several page updates, each a sequence of page numbers. Your task is to identify which of these updates are
+// already in the correct print order according to the given rules (ignoring rules for pages not present in an update).
+// Finally, you need to sum the middle page numbers of all correctly-ordered updates.
+
 import gleam/bool
 import gleam/dict
 import gleam/list
