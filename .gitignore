@@ -9,3 +9,8 @@
 # Language artifacts
 **/gleam/build
 **/node_modules
+
+# Python
+__pycache__/
+## storing aoc session token here
+python/.env.toml
