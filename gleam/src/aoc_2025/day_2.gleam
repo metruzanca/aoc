@@ -17,31 +17,30 @@ const pt_1_example_answer = 1_227_775_554
 
 const pt_2_example_answer = 4_174_379_265
 
-// Returns the size of the substring
+// Checks if theres substring of repeating digits (excluding 0) or groups of digits
+// 111 is repeating 1s. 6464 is repeating 64
 fn find_repeating_substring(value: Int) {
   let str = int.to_string(value)
   let len = string.length(str)
   let max_size = len / 2
 
-  // Iterate all the possible sizes of duplicate numbers
-  let found =
-    list.range(1, max_size)
-    |> list.find(fn(sub_len) {
-      // Check all positions with the given size
-      list.range(0, len - 2 * sub_len)
-      // list.any over list.find since any returns an bool
-      |> list.any(fn(i) {
-        let sub_str_1 = string.slice(str, i, i + sub_len)
-        let sub_str_2 = string.slice(str, i + sub_len, i + 2 * sub_len)
+  let sub_str_sizes = list.range(1, max_size)
 
-        // is the substring is all zeros, we can skip it. 
-        use <- bool.guard(string.starts_with(sub_str_1, "0"), False)
+  list.any(sub_str_sizes, fn(size) {
+    let sub_str_1 = string.slice(str, 0, size)
+    let sub_str_2 = string.slice(str, size, size * 2)
 
-        sub_str_1 == sub_str_2
-      })
-    })
+    use <- bool.guard(
+      string.length(sub_str_1) == string.length(sub_str_2),
+      sub_str_1 == sub_str_2,
+    )
 
-  found
+    // echo #(str, size, max_size, sub_str_1, sub_str_2)
+
+    let sub_str_2 = string.slice(str, size, size * 2 - 1)
+
+    sub_str_1 == sub_str_2
+  })
 }
 
 // Returns the size of the substring
@@ -90,7 +89,7 @@ pub fn pt_2(input: Input) {
   let result =
     list.fold(all_ids, 0, fn(invalid_sum, id) {
       case find_repeating_substring(id) {
-        Ok(_) -> {
+        True -> {
           echo id
           invalid_sum + id
         }
