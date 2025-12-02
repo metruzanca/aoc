@@ -1,5 +1,3 @@
-import gleam/int
-import gleam/io
 import gleam/list
 import gleam/string
 import utils/quick
@@ -14,6 +12,7 @@ fn split_line(value: String) {
     "L" <> num -> #(L, quick.int(num))
     "R" <> num -> #(R, quick.int(num))
     _ -> #(R, 0)
+    // not returning results because this is aoc
   }
 }
 
@@ -29,8 +28,8 @@ pub fn pt_1(input: List(#(Direction, Int))) {
       let #(direction, amount) = cur
 
       let new_pos = case direction {
-        R -> { pos - amount } % 100
-        L -> { pos + amount } % 100
+        R -> { pos + amount } % 100
+        L -> { pos - amount } % 100
       }
 
       let new_count = case pos {
@@ -43,26 +42,48 @@ pub fn pt_1(input: List(#(Direction, Int))) {
   result.1
 }
 
+const starting_pos = 50
+
+const total_clicks = 100
+
+const initial_state = #(starting_pos, 0)
+
 pub fn pt_2(input: List(#(Direction, Int))) {
   let result =
-    list.fold(input, #(50, 0), fn(acc, value) {
+    list.fold(input, initial_state, fn(acc, cur) {
       let #(pos, count) = acc
-      let #(direction, amount) = value
+      let #(direction, amount) = cur
 
-      let new_pos = case direction {
-        R -> pos - amount
-        L -> pos + amount
+      // Add full rotations to count (not present in example input)
+      let over_rotations = amount / total_clicks
+      let count = count + over_rotations
+
+      // Add partial rotations passing thru or ending on 0
+      let amount = amount % total_clicks
+      case direction {
+        L -> {
+          let new_pos = { pos - amount + total_clicks } % total_clicks
+
+          let new_count = case pos - amount <= 0 && pos > 0 {
+            True -> count + 1
+            False -> count
+          }
+
+          #(new_pos, new_count)
+        }
+        R -> {
+          let new_pos = { pos + amount } % total_clicks
+
+          let new_count = case
+            pos + amount >= total_clicks && pos < total_clicks
+          {
+            True -> count + 1
+            False -> count
+          }
+
+          #(new_pos, new_count)
+        }
       }
-
-      echo [pos, amount, new_pos]
-
-      io.println("Final pos: " <> int.to_string(pos))
-
-      #(
-        new_pos % 100,
-        // Account for passing the 0 by doing an int divide
-        count + { new_pos / 100 },
-      )
     })
 
   result.1
