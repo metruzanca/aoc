@@ -27,3 +27,11 @@ gleam run run 1
 ```
 
 See CLI help screens.
+
+## Tips
+
+Use nodemon to rebuild on file save
+
+```
+nodemon --ext gleam --exec "gleam run run 2 --example"
+```

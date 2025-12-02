@@ -88,3 +88,20 @@ pub fn pt_2(input: List(#(Direction, Int))) {
 
   result.1
 }
+// Amazing solution by discord:kappa.23
+// pub fn pt_2(input: List(#(Int, Int))) {
+//   let acc =
+//     input
+//     |> list.fold(#(50, 0), fn(acc, rotation) {
+//       let #(dial, count) = acc
+//       let #(direction, amount) = rotation
+
+//       let count = count + { { 100 + direction * dial } % 100 + amount } / 100
+
+//       let dial = { dial + direction * amount } % 100
+
+//       #(dial, count)
+//     })
+
+//   acc.1
+// }
