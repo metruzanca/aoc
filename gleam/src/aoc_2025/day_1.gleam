@@ -1,3 +1,5 @@
+import gleam/int
+import gleam/io
 import gleam/list
 import gleam/string
 import utils/quick
@@ -21,37 +23,47 @@ pub fn parse(input: String) {
 }
 
 pub fn pt_1(input: List(#(Direction, Int))) {
-  process(input, 50, 0)
-}
+  let result =
+    list.fold(input, #(50, 0), fn(acc, cur) {
+      let #(pos, count) = acc
+      let #(direction, amount) = cur
 
-fn process(arr: List(#(Direction, Int)), pos: Int, count: Int) {
-  // echo arr
-  // echo pos
-  // echo count
+      let new_pos = case direction {
+        R -> { pos - amount } % 100
+        L -> { pos + amount } % 100
+      }
 
-  case arr {
-    [] -> count
-    [value, ..rest] -> {
-      let new_pos = turn_dial(pos, value.0, value.1)
-      process(rest, new_pos, next_count(new_pos, count))
-    }
-  }
-}
+      let new_count = case pos {
+        0 -> count + 1
+        _ -> count
+      }
+      #(new_pos, new_count)
+    })
 
-fn turn_dial(pos: Int, dir: Direction, amount: Int) {
-  case dir {
-    R -> { pos - amount } % 100
-    L -> { pos + amount } % 100
-  }
-}
-
-fn next_count(pos, count: Int) {
-  case pos {
-    0 -> count + 1
-    _ -> count
-  }
+  result.1
 }
 
 pub fn pt_2(input: List(#(Direction, Int))) {
-  todo as "part 2 not implemented"
+  let result =
+    list.fold(input, #(50, 0), fn(acc, value) {
+      let #(pos, count) = acc
+      let #(direction, amount) = value
+
+      let new_pos = case direction {
+        R -> pos - amount
+        L -> pos + amount
+      }
+
+      echo [pos, amount, new_pos]
+
+      io.println("Final pos: " <> int.to_string(pos))
+
+      #(
+        new_pos % 100,
+        // Account for passing the 0 by doing an int divide
+        count + { new_pos / 100 },
+      )
+    })
+
+  result.1
 }
