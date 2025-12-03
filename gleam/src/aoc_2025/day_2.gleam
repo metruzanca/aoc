@@ -17,29 +17,33 @@ const pt_1_example_answer = 1_227_775_554
 
 const pt_2_example_answer = 4_174_379_265
 
-// Checks if theres substring of repeating digits (excluding 0) or groups of digits
-// 111 is repeating 1s. 6464 is repeating 64
+// Checks if value is repeating digits/groups for the whole value e.g.
+// 1 1 1, 64 64, 2 2, 33 33 33. (spaces emphasis)
+// repeating at least twice but must be the whole value
+// 1 1 0, while repeating the ones, it would need to be 1 1 1.
 fn find_repeating_substring(value: Int) {
   let str = int.to_string(value)
   let len = string.length(str)
-  let max_size = len / 2
 
-  let sub_str_sizes = list.range(1, max_size)
+  let is_even = len % 2 == 0
+
+  let max_size = case is_even {
+    True -> len / 2
+    False -> 1
+  }
+
+  // echo value`
+
+  let sub_str_sizes = list.range(1, max_size) |> list.reverse
+
+  // Split the string into as many chunks as we can
 
   list.any(sub_str_sizes, fn(size) {
-    let sub_str_1 = string.slice(str, 0, size)
-    let sub_str_2 = string.slice(str, size, size * 2)
+    let chunks = list.sized_chunk(string.split(str, ""), size)
 
-    use <- bool.guard(
-      string.length(sub_str_1) == string.length(sub_str_2),
-      sub_str_1 == sub_str_2,
-    )
+    let assert Ok(first) = list.first(chunks)
 
-    // echo #(str, size, max_size, sub_str_1, sub_str_2)
-
-    let sub_str_2 = string.slice(str, size, size * 2 - 1)
-
-    sub_str_1 == sub_str_2
+    list.all(chunks, fn(x) { string.join(first, "") == string.join(x, "") })
   })
 }
 
@@ -72,12 +76,11 @@ pub fn pt_1(input: Input) {
       }
     })
 
-  echo #(result, result == pt_1_example_answer)
-
   result
 }
 
 // tried 3349553331 but was too low
+// tried 50857215695 but is too high
 
 pub fn pt_2(input: Input) {
   let all_ids =
@@ -89,15 +92,18 @@ pub fn pt_2(input: Input) {
   let result =
     list.fold(all_ids, 0, fn(invalid_sum, id) {
       case find_repeating_substring(id) {
-        True -> {
-          echo id
-          invalid_sum + id
-        }
+        True -> invalid_sum + id
         _ -> invalid_sum
       }
     })
 
-  echo #(result, result == pt_2_example_answer)
+  echo #(
+    result == pt_2_example_answer,
+    "got: ",
+    result,
+    "expected: ",
+    pt_2_example_answer,
+  )
 
   result
 }
